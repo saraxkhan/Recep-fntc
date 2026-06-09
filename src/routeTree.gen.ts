@@ -9,38 +9,212 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as BookRouteImport } from './routes/book'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
+import { Route as AdminDoctorsRouteImport } from './routes/admin.doctors'
+import { Route as ApiPublicAiSendSmsRouteImport } from './routes/api.public.ai.send-sms'
+import { Route as ApiPublicAiNextAvailableSlotRouteImport } from './routes/api.public.ai.next-available-slot'
+import { Route as ApiPublicAiFindDoctorRouteImport } from './routes/api.public.ai.find-doctor'
+import { Route as ApiPublicAiCreatePatientRouteImport } from './routes/api.public.ai.create-patient'
+import { Route as ApiPublicAiCheckAvailabilityRouteImport } from './routes/api.public.ai.check-availability'
+import { Route as ApiPublicAiCancelAppointmentRouteImport } from './routes/api.public.ai.cancel-appointment'
+import { Route as ApiPublicAiBookAppointmentRouteImport } from './routes/api.public.ai.book-appointment'
 
+const BookRoute = BookRouteImport.update({
+  id: '/book',
+  path: '/book',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPatientsRoute = AdminPatientsRouteImport.update({
+  id: '/patients',
+  path: '/patients',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDoctorsRoute = AdminDoctorsRouteImport.update({
+  id: '/doctors',
+  path: '/doctors',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ApiPublicAiSendSmsRoute = ApiPublicAiSendSmsRouteImport.update({
+  id: '/api/public/ai/send-sms',
+  path: '/api/public/ai/send-sms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicAiNextAvailableSlotRoute =
+  ApiPublicAiNextAvailableSlotRouteImport.update({
+    id: '/api/public/ai/next-available-slot',
+    path: '/api/public/ai/next-available-slot',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicAiFindDoctorRoute = ApiPublicAiFindDoctorRouteImport.update({
+  id: '/api/public/ai/find-doctor',
+  path: '/api/public/ai/find-doctor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicAiCreatePatientRoute =
+  ApiPublicAiCreatePatientRouteImport.update({
+    id: '/api/public/ai/create-patient',
+    path: '/api/public/ai/create-patient',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicAiCheckAvailabilityRoute =
+  ApiPublicAiCheckAvailabilityRouteImport.update({
+    id: '/api/public/ai/check-availability',
+    path: '/api/public/ai/check-availability',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicAiCancelAppointmentRoute =
+  ApiPublicAiCancelAppointmentRouteImport.update({
+    id: '/api/public/ai/cancel-appointment',
+    path: '/api/public/ai/cancel-appointment',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicAiBookAppointmentRoute =
+  ApiPublicAiBookAppointmentRouteImport.update({
+    id: '/api/public/ai/book-appointment',
+    path: '/api/public/ai/book-appointment',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/book': typeof BookRoute
+  '/admin/doctors': typeof AdminDoctorsRoute
+  '/admin/patients': typeof AdminPatientsRoute
+  '/admin/': typeof AdminIndexRoute
+  '/api/public/ai/book-appointment': typeof ApiPublicAiBookAppointmentRoute
+  '/api/public/ai/cancel-appointment': typeof ApiPublicAiCancelAppointmentRoute
+  '/api/public/ai/check-availability': typeof ApiPublicAiCheckAvailabilityRoute
+  '/api/public/ai/create-patient': typeof ApiPublicAiCreatePatientRoute
+  '/api/public/ai/find-doctor': typeof ApiPublicAiFindDoctorRoute
+  '/api/public/ai/next-available-slot': typeof ApiPublicAiNextAvailableSlotRoute
+  '/api/public/ai/send-sms': typeof ApiPublicAiSendSmsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/book': typeof BookRoute
+  '/admin/doctors': typeof AdminDoctorsRoute
+  '/admin/patients': typeof AdminPatientsRoute
+  '/admin': typeof AdminIndexRoute
+  '/api/public/ai/book-appointment': typeof ApiPublicAiBookAppointmentRoute
+  '/api/public/ai/cancel-appointment': typeof ApiPublicAiCancelAppointmentRoute
+  '/api/public/ai/check-availability': typeof ApiPublicAiCheckAvailabilityRoute
+  '/api/public/ai/create-patient': typeof ApiPublicAiCreatePatientRoute
+  '/api/public/ai/find-doctor': typeof ApiPublicAiFindDoctorRoute
+  '/api/public/ai/next-available-slot': typeof ApiPublicAiNextAvailableSlotRoute
+  '/api/public/ai/send-sms': typeof ApiPublicAiSendSmsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/book': typeof BookRoute
+  '/admin/doctors': typeof AdminDoctorsRoute
+  '/admin/patients': typeof AdminPatientsRoute
+  '/admin/': typeof AdminIndexRoute
+  '/api/public/ai/book-appointment': typeof ApiPublicAiBookAppointmentRoute
+  '/api/public/ai/cancel-appointment': typeof ApiPublicAiCancelAppointmentRoute
+  '/api/public/ai/check-availability': typeof ApiPublicAiCheckAvailabilityRoute
+  '/api/public/ai/create-patient': typeof ApiPublicAiCreatePatientRoute
+  '/api/public/ai/find-doctor': typeof ApiPublicAiFindDoctorRoute
+  '/api/public/ai/next-available-slot': typeof ApiPublicAiNextAvailableSlotRoute
+  '/api/public/ai/send-sms': typeof ApiPublicAiSendSmsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/book'
+    | '/admin/doctors'
+    | '/admin/patients'
+    | '/admin/'
+    | '/api/public/ai/book-appointment'
+    | '/api/public/ai/cancel-appointment'
+    | '/api/public/ai/check-availability'
+    | '/api/public/ai/create-patient'
+    | '/api/public/ai/find-doctor'
+    | '/api/public/ai/next-available-slot'
+    | '/api/public/ai/send-sms'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/book'
+    | '/admin/doctors'
+    | '/admin/patients'
+    | '/admin'
+    | '/api/public/ai/book-appointment'
+    | '/api/public/ai/cancel-appointment'
+    | '/api/public/ai/check-availability'
+    | '/api/public/ai/create-patient'
+    | '/api/public/ai/find-doctor'
+    | '/api/public/ai/next-available-slot'
+    | '/api/public/ai/send-sms'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/book'
+    | '/admin/doctors'
+    | '/admin/patients'
+    | '/admin/'
+    | '/api/public/ai/book-appointment'
+    | '/api/public/ai/cancel-appointment'
+    | '/api/public/ai/check-availability'
+    | '/api/public/ai/create-patient'
+    | '/api/public/ai/find-doctor'
+    | '/api/public/ai/next-available-slot'
+    | '/api/public/ai/send-sms'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  BookRoute: typeof BookRoute
+  ApiPublicAiBookAppointmentRoute: typeof ApiPublicAiBookAppointmentRoute
+  ApiPublicAiCancelAppointmentRoute: typeof ApiPublicAiCancelAppointmentRoute
+  ApiPublicAiCheckAvailabilityRoute: typeof ApiPublicAiCheckAvailabilityRoute
+  ApiPublicAiCreatePatientRoute: typeof ApiPublicAiCreatePatientRoute
+  ApiPublicAiFindDoctorRoute: typeof ApiPublicAiFindDoctorRoute
+  ApiPublicAiNextAvailableSlotRoute: typeof ApiPublicAiNextAvailableSlotRoute
+  ApiPublicAiSendSmsRoute: typeof ApiPublicAiSendSmsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/book': {
+      id: '/book'
+      path: '/book'
+      fullPath: '/book'
+      preLoaderRoute: typeof BookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +222,104 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/patients': {
+      id: '/admin/patients'
+      path: '/patients'
+      fullPath: '/admin/patients'
+      preLoaderRoute: typeof AdminPatientsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/doctors': {
+      id: '/admin/doctors'
+      path: '/doctors'
+      fullPath: '/admin/doctors'
+      preLoaderRoute: typeof AdminDoctorsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/api/public/ai/send-sms': {
+      id: '/api/public/ai/send-sms'
+      path: '/api/public/ai/send-sms'
+      fullPath: '/api/public/ai/send-sms'
+      preLoaderRoute: typeof ApiPublicAiSendSmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/ai/next-available-slot': {
+      id: '/api/public/ai/next-available-slot'
+      path: '/api/public/ai/next-available-slot'
+      fullPath: '/api/public/ai/next-available-slot'
+      preLoaderRoute: typeof ApiPublicAiNextAvailableSlotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/ai/find-doctor': {
+      id: '/api/public/ai/find-doctor'
+      path: '/api/public/ai/find-doctor'
+      fullPath: '/api/public/ai/find-doctor'
+      preLoaderRoute: typeof ApiPublicAiFindDoctorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/ai/create-patient': {
+      id: '/api/public/ai/create-patient'
+      path: '/api/public/ai/create-patient'
+      fullPath: '/api/public/ai/create-patient'
+      preLoaderRoute: typeof ApiPublicAiCreatePatientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/ai/check-availability': {
+      id: '/api/public/ai/check-availability'
+      path: '/api/public/ai/check-availability'
+      fullPath: '/api/public/ai/check-availability'
+      preLoaderRoute: typeof ApiPublicAiCheckAvailabilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/ai/cancel-appointment': {
+      id: '/api/public/ai/cancel-appointment'
+      path: '/api/public/ai/cancel-appointment'
+      fullPath: '/api/public/ai/cancel-appointment'
+      preLoaderRoute: typeof ApiPublicAiCancelAppointmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/ai/book-appointment': {
+      id: '/api/public/ai/book-appointment'
+      path: '/api/public/ai/book-appointment'
+      fullPath: '/api/public/ai/book-appointment'
+      preLoaderRoute: typeof ApiPublicAiBookAppointmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminDoctorsRoute: typeof AdminDoctorsRoute
+  AdminPatientsRoute: typeof AdminPatientsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminDoctorsRoute: AdminDoctorsRoute,
+  AdminPatientsRoute: AdminPatientsRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  BookRoute: BookRoute,
+  ApiPublicAiBookAppointmentRoute: ApiPublicAiBookAppointmentRoute,
+  ApiPublicAiCancelAppointmentRoute: ApiPublicAiCancelAppointmentRoute,
+  ApiPublicAiCheckAvailabilityRoute: ApiPublicAiCheckAvailabilityRoute,
+  ApiPublicAiCreatePatientRoute: ApiPublicAiCreatePatientRoute,
+  ApiPublicAiFindDoctorRoute: ApiPublicAiFindDoctorRoute,
+  ApiPublicAiNextAvailableSlotRoute: ApiPublicAiNextAvailableSlotRoute,
+  ApiPublicAiSendSmsRoute: ApiPublicAiSendSmsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
