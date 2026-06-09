@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "F&TC HealthCare" },
+      { name: "description", content: "F&TC Healthcare provides compassionate, quality medical care with modern facilities, expert professionals, and a patient-first approach for better health." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "F&TC HealthCare" },
+      { property: "og:description", content: "F&TC Healthcare provides compassionate, quality medical care with modern facilities, expert professionals, and a patient-first approach for better health." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "F&TC HealthCare" },
+      { name: "twitter:description", content: "F&TC Healthcare provides compassionate, quality medical care with modern facilities, expert professionals, and a patient-first approach for better health." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/b487b832-2d38-4a57-9afb-13cb9d6ba0ed" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/b487b832-2d38-4a57-9afb-13cb9d6ba0ed" },
     ],
     links: [
       {
