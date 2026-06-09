@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ReceptionistRouteImport } from './routes/receptionist'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
@@ -24,6 +25,11 @@ import { Route as ApiPublicAiCheckAvailabilityRouteImport } from './routes/api.p
 import { Route as ApiPublicAiCancelAppointmentRouteImport } from './routes/api.public.ai.cancel-appointment'
 import { Route as ApiPublicAiBookAppointmentRouteImport } from './routes/api.public.ai.book-appointment'
 
+const ReceptionistRoute = ReceptionistRouteImport.update({
+  id: '/receptionist',
+  path: '/receptionist',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BookRoute = BookRouteImport.update({
   id: '/book',
   path: '/book',
@@ -104,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/book': typeof BookRoute
+  '/receptionist': typeof ReceptionistRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/patients': typeof AdminPatientsRoute
   '/api/chat': typeof ApiChatRoute
@@ -119,6 +126,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/book': typeof BookRoute
+  '/receptionist': typeof ReceptionistRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/patients': typeof AdminPatientsRoute
   '/api/chat': typeof ApiChatRoute
@@ -136,6 +144,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/book': typeof BookRoute
+  '/receptionist': typeof ReceptionistRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/patients': typeof AdminPatientsRoute
   '/api/chat': typeof ApiChatRoute
@@ -154,6 +163,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/book'
+    | '/receptionist'
     | '/admin/doctors'
     | '/admin/patients'
     | '/api/chat'
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/book'
+    | '/receptionist'
     | '/admin/doctors'
     | '/admin/patients'
     | '/api/chat'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/book'
+    | '/receptionist'
     | '/admin/doctors'
     | '/admin/patients'
     | '/api/chat'
@@ -202,6 +214,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   BookRoute: typeof BookRoute
+  ReceptionistRoute: typeof ReceptionistRoute
   ApiChatRoute: typeof ApiChatRoute
   ApiPublicAiBookAppointmentRoute: typeof ApiPublicAiBookAppointmentRoute
   ApiPublicAiCancelAppointmentRoute: typeof ApiPublicAiCancelAppointmentRoute
@@ -214,6 +227,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/receptionist': {
+      id: '/receptionist'
+      path: '/receptionist'
+      fullPath: '/receptionist'
+      preLoaderRoute: typeof ReceptionistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/book': {
       id: '/book'
       path: '/book'
@@ -333,6 +353,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   BookRoute: BookRoute,
+  ReceptionistRoute: ReceptionistRoute,
   ApiChatRoute: ApiChatRoute,
   ApiPublicAiBookAppointmentRoute: ApiPublicAiBookAppointmentRoute,
   ApiPublicAiCancelAppointmentRoute: ApiPublicAiCancelAppointmentRoute,
