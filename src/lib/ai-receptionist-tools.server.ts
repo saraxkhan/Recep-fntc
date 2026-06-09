@@ -263,6 +263,7 @@ export const receptionistTools = {
       }
       const doctor = await loadDoctor(args.doctor_id);
       if (!doctor) return { error: "doctor_not_found" };
+      if (!patientId) return { error: "patient_not_resolved" };
       const check = await validateSlot(doctor, appointment_date, args.appointment_time);
       if (!check.ok) return { error: check.code, message: check.message };
       const { data: inserted, error } = await supabaseAdmin
