@@ -13,6 +13,7 @@ import { Route as BookRouteImport } from './routes/book'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as ApiChatRouteImport } from './routes/api.chat'
 import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
 import { Route as AdminDoctorsRouteImport } from './routes/admin.doctors'
 import { Route as ApiPublicAiSendSmsRouteImport } from './routes/api.public.ai.send-sms'
@@ -42,6 +43,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminPatientsRoute = AdminPatientsRouteImport.update({
   id: '/patients',
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/book': typeof BookRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/patients': typeof AdminPatientsRoute
+  '/api/chat': typeof ApiChatRoute
   '/admin/': typeof AdminIndexRoute
   '/api/public/ai/book-appointment': typeof ApiPublicAiBookAppointmentRoute
   '/api/public/ai/cancel-appointment': typeof ApiPublicAiCancelAppointmentRoute
@@ -114,6 +121,7 @@ export interface FileRoutesByTo {
   '/book': typeof BookRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/patients': typeof AdminPatientsRoute
+  '/api/chat': typeof ApiChatRoute
   '/admin': typeof AdminIndexRoute
   '/api/public/ai/book-appointment': typeof ApiPublicAiBookAppointmentRoute
   '/api/public/ai/cancel-appointment': typeof ApiPublicAiCancelAppointmentRoute
@@ -130,6 +138,7 @@ export interface FileRoutesById {
   '/book': typeof BookRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/patients': typeof AdminPatientsRoute
+  '/api/chat': typeof ApiChatRoute
   '/admin/': typeof AdminIndexRoute
   '/api/public/ai/book-appointment': typeof ApiPublicAiBookAppointmentRoute
   '/api/public/ai/cancel-appointment': typeof ApiPublicAiCancelAppointmentRoute
@@ -147,6 +156,7 @@ export interface FileRouteTypes {
     | '/book'
     | '/admin/doctors'
     | '/admin/patients'
+    | '/api/chat'
     | '/admin/'
     | '/api/public/ai/book-appointment'
     | '/api/public/ai/cancel-appointment'
@@ -161,6 +171,7 @@ export interface FileRouteTypes {
     | '/book'
     | '/admin/doctors'
     | '/admin/patients'
+    | '/api/chat'
     | '/admin'
     | '/api/public/ai/book-appointment'
     | '/api/public/ai/cancel-appointment'
@@ -176,6 +187,7 @@ export interface FileRouteTypes {
     | '/book'
     | '/admin/doctors'
     | '/admin/patients'
+    | '/api/chat'
     | '/admin/'
     | '/api/public/ai/book-appointment'
     | '/api/public/ai/cancel-appointment'
@@ -190,6 +202,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   BookRoute: typeof BookRoute
+  ApiChatRoute: typeof ApiChatRoute
   ApiPublicAiBookAppointmentRoute: typeof ApiPublicAiBookAppointmentRoute
   ApiPublicAiCancelAppointmentRoute: typeof ApiPublicAiCancelAppointmentRoute
   ApiPublicAiCheckAvailabilityRoute: typeof ApiPublicAiCheckAvailabilityRoute
@@ -228,6 +241,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/admin/patients': {
       id: '/admin/patients'
@@ -313,6 +333,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   BookRoute: BookRoute,
+  ApiChatRoute: ApiChatRoute,
   ApiPublicAiBookAppointmentRoute: ApiPublicAiBookAppointmentRoute,
   ApiPublicAiCancelAppointmentRoute: ApiPublicAiCancelAppointmentRoute,
   ApiPublicAiCheckAvailabilityRoute: ApiPublicAiCheckAvailabilityRoute,
@@ -324,3 +345,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
