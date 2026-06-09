@@ -22,7 +22,13 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const tiles = [
+  const tiles: Array<{
+    to: "/receptionist" | "/book" | "/admin";
+    title: string;
+    desc: string;
+    icon: typeof MessageSquare;
+    accent?: boolean;
+  }> = [
     {
       to: "/receptionist",
       title: "Chat with Maya",
@@ -42,7 +48,7 @@ function Index() {
       desc: "Appointments, doctors, patients.",
       icon: LayoutDashboard,
     },
-  ] as const;
+  ];
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/40">
       <header className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
