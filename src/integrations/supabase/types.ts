@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_conversation_logs: {
+        Row: {
+          appointment_id: string | null
+          content: string | null
+          created_at: string
+          id: string
+          role: string
+          session_id: string
+          tool_input: Json | null
+          tool_name: string | null
+          tool_output: Json | null
+        }
+        Insert: {
+          appointment_id?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          role: string
+          session_id: string
+          tool_input?: Json | null
+          tool_name?: string | null
+          tool_output?: Json | null
+        }
+        Update: {
+          appointment_id?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          role?: string
+          session_id?: string
+          tool_input?: Json | null
+          tool_name?: string | null
+          tool_output?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_conversation_logs_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       appointments: {
         Row: {
           appointment_date: string
@@ -61,6 +105,59 @@ export type Database = {
             columns: ["patient_id"]
             isOneToOne: false
             referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      call_logs: {
+        Row: {
+          appointment_id: string | null
+          booking_succeeded: boolean
+          channel: string
+          ended_at: string | null
+          id: string
+          last_activity_at: string
+          message_count: number
+          metadata: Json
+          session_id: string
+          started_at: string
+          status: string
+          tool_call_count: number
+        }
+        Insert: {
+          appointment_id?: string | null
+          booking_succeeded?: boolean
+          channel?: string
+          ended_at?: string | null
+          id?: string
+          last_activity_at?: string
+          message_count?: number
+          metadata?: Json
+          session_id: string
+          started_at?: string
+          status?: string
+          tool_call_count?: number
+        }
+        Update: {
+          appointment_id?: string | null
+          booking_succeeded?: boolean
+          channel?: string
+          ended_at?: string | null
+          id?: string
+          last_activity_at?: string
+          message_count?: number
+          metadata?: Json
+          session_id?: string
+          started_at?: string
+          status?: string
+          tool_call_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "call_logs_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
             referencedColumns: ["id"]
           },
         ]
