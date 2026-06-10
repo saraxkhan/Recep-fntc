@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReceptionistRouteImport } from './routes/receptionist'
 import { Route as BookRouteImport } from './routes/book'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
@@ -18,6 +19,7 @@ import { Route as ApiChatRouteImport } from './routes/api.chat'
 import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
 import { Route as AdminDoctorsRouteImport } from './routes/admin.doctors'
 import { Route as AdminConversationsRouteImport } from './routes/admin.conversations'
+import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
 import { Route as ApiPublicAiSendSmsRouteImport } from './routes/api.public.ai.send-sms'
 import { Route as ApiPublicAiNextAvailableSlotRouteImport } from './routes/api.public.ai.next-available-slot'
@@ -35,6 +37,11 @@ const ReceptionistRoute = ReceptionistRouteImport.update({
 const BookRoute = BookRouteImport.update({
   id: '/book',
   path: '/book',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -70,6 +77,11 @@ const AdminDoctorsRoute = AdminDoctorsRouteImport.update({
 const AdminConversationsRoute = AdminConversationsRouteImport.update({
   id: '/conversations',
   path: '/conversations',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAuditRoute = AdminAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
@@ -121,9 +133,11 @@ const ApiPublicAiBookAppointmentRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/auth': typeof AuthRoute
   '/book': typeof BookRoute
   '/receptionist': typeof ReceptionistRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/audit': typeof AdminAuditRoute
   '/admin/conversations': typeof AdminConversationsRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/patients': typeof AdminPatientsRoute
@@ -139,9 +153,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/book': typeof BookRoute
   '/receptionist': typeof ReceptionistRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/audit': typeof AdminAuditRoute
   '/admin/conversations': typeof AdminConversationsRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/patients': typeof AdminPatientsRoute
@@ -159,9 +175,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/auth': typeof AuthRoute
   '/book': typeof BookRoute
   '/receptionist': typeof ReceptionistRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/audit': typeof AdminAuditRoute
   '/admin/conversations': typeof AdminConversationsRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/patients': typeof AdminPatientsRoute
@@ -180,9 +198,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/auth'
     | '/book'
     | '/receptionist'
     | '/admin/analytics'
+    | '/admin/audit'
     | '/admin/conversations'
     | '/admin/doctors'
     | '/admin/patients'
@@ -198,9 +218,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/book'
     | '/receptionist'
     | '/admin/analytics'
+    | '/admin/audit'
     | '/admin/conversations'
     | '/admin/doctors'
     | '/admin/patients'
@@ -217,9 +239,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/auth'
     | '/book'
     | '/receptionist'
     | '/admin/analytics'
+    | '/admin/audit'
     | '/admin/conversations'
     | '/admin/doctors'
     | '/admin/patients'
@@ -237,6 +261,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
+  AuthRoute: typeof AuthRoute
   BookRoute: typeof BookRoute
   ReceptionistRoute: typeof ReceptionistRoute
   ApiChatRoute: typeof ApiChatRoute
@@ -263,6 +288,13 @@ declare module '@tanstack/react-router' {
       path: '/book'
       fullPath: '/book'
       preLoaderRoute: typeof BookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -312,6 +344,13 @@ declare module '@tanstack/react-router' {
       path: '/conversations'
       fullPath: '/admin/conversations'
       preLoaderRoute: typeof AdminConversationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/audit': {
+      id: '/admin/audit'
+      path: '/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AdminAuditRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/analytics': {
@@ -375,6 +414,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
+  AdminAuditRoute: typeof AdminAuditRoute
   AdminConversationsRoute: typeof AdminConversationsRoute
   AdminDoctorsRoute: typeof AdminDoctorsRoute
   AdminPatientsRoute: typeof AdminPatientsRoute
@@ -383,6 +423,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAnalyticsRoute: AdminAnalyticsRoute,
+  AdminAuditRoute: AdminAuditRoute,
   AdminConversationsRoute: AdminConversationsRoute,
   AdminDoctorsRoute: AdminDoctorsRoute,
   AdminPatientsRoute: AdminPatientsRoute,
@@ -394,6 +435,7 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
+  AuthRoute: AuthRoute,
   BookRoute: BookRoute,
   ReceptionistRoute: ReceptionistRoute,
   ApiChatRoute: ApiChatRoute,
