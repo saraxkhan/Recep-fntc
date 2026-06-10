@@ -33,7 +33,24 @@ const GREETING =
   "Hi! I'm Maya, the MediVoice receptionist. I can book, check, or cancel appointments — what can I help you with?";
 
 function ReceptionistPage() {
-  const transport = useMemo(() => new DefaultChatTransport({ api: "/api/chat" }), []);
+  const sessionId = useMemo(() => {
+    if (typeof window === "undefined") return crypto.randomUUID();
+    const KEY = "medivoice.chat.session";
+    let id = window.localStorage.getItem(KEY);
+    if (!id) {
+      id = crypto.randomUUID();
+      window.localStorage.setItem(KEY, id);
+    }
+    return id;
+  }, []);
+  const transport = useMemo(
+    () =>
+      new DefaultChatTransport({
+        api: "/api/chat",
+        body: { sessionId },
+      }),
+    [sessionId],
+  );
   const { messages, sendMessage, status, error, stop } = useChat({
     transport,
   });

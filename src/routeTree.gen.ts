@@ -17,6 +17,8 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ApiChatRouteImport } from './routes/api.chat'
 import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
 import { Route as AdminDoctorsRouteImport } from './routes/admin.doctors'
+import { Route as AdminConversationsRouteImport } from './routes/admin.conversations'
+import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
 import { Route as ApiPublicAiSendSmsRouteImport } from './routes/api.public.ai.send-sms'
 import { Route as ApiPublicAiNextAvailableSlotRouteImport } from './routes/api.public.ai.next-available-slot'
 import { Route as ApiPublicAiFindDoctorRouteImport } from './routes/api.public.ai.find-doctor'
@@ -65,6 +67,16 @@ const AdminDoctorsRoute = AdminDoctorsRouteImport.update({
   path: '/doctors',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminConversationsRoute = AdminConversationsRouteImport.update({
+  id: '/conversations',
+  path: '/conversations',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ApiPublicAiSendSmsRoute = ApiPublicAiSendSmsRouteImport.update({
   id: '/api/public/ai/send-sms',
   path: '/api/public/ai/send-sms',
@@ -111,6 +123,8 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/book': typeof BookRoute
   '/receptionist': typeof ReceptionistRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/conversations': typeof AdminConversationsRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/patients': typeof AdminPatientsRoute
   '/api/chat': typeof ApiChatRoute
@@ -127,6 +141,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/book': typeof BookRoute
   '/receptionist': typeof ReceptionistRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/conversations': typeof AdminConversationsRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/patients': typeof AdminPatientsRoute
   '/api/chat': typeof ApiChatRoute
@@ -145,6 +161,8 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/book': typeof BookRoute
   '/receptionist': typeof ReceptionistRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/conversations': typeof AdminConversationsRoute
   '/admin/doctors': typeof AdminDoctorsRoute
   '/admin/patients': typeof AdminPatientsRoute
   '/api/chat': typeof ApiChatRoute
@@ -164,6 +182,8 @@ export interface FileRouteTypes {
     | '/admin'
     | '/book'
     | '/receptionist'
+    | '/admin/analytics'
+    | '/admin/conversations'
     | '/admin/doctors'
     | '/admin/patients'
     | '/api/chat'
@@ -180,6 +200,8 @@ export interface FileRouteTypes {
     | '/'
     | '/book'
     | '/receptionist'
+    | '/admin/analytics'
+    | '/admin/conversations'
     | '/admin/doctors'
     | '/admin/patients'
     | '/api/chat'
@@ -197,6 +219,8 @@ export interface FileRouteTypes {
     | '/admin'
     | '/book'
     | '/receptionist'
+    | '/admin/analytics'
+    | '/admin/conversations'
     | '/admin/doctors'
     | '/admin/patients'
     | '/api/chat'
@@ -283,6 +307,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDoctorsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/conversations': {
+      id: '/admin/conversations'
+      path: '/conversations'
+      fullPath: '/admin/conversations'
+      preLoaderRoute: typeof AdminConversationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/analytics': {
+      id: '/admin/analytics'
+      path: '/analytics'
+      fullPath: '/admin/analytics'
+      preLoaderRoute: typeof AdminAnalyticsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/api/public/ai/send-sms': {
       id: '/api/public/ai/send-sms'
       path: '/api/public/ai/send-sms'
@@ -336,12 +374,16 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminAnalyticsRoute: typeof AdminAnalyticsRoute
+  AdminConversationsRoute: typeof AdminConversationsRoute
   AdminDoctorsRoute: typeof AdminDoctorsRoute
   AdminPatientsRoute: typeof AdminPatientsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAnalyticsRoute: AdminAnalyticsRoute,
+  AdminConversationsRoute: AdminConversationsRoute,
   AdminDoctorsRoute: AdminDoctorsRoute,
   AdminPatientsRoute: AdminPatientsRoute,
   AdminIndexRoute: AdminIndexRoute,

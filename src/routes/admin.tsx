@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { Calendar, Users, Stethoscope } from "lucide-react";
+import { Calendar, Users, Stethoscope, MessageSquare, BarChart3 } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Admin · MediVoice" }] }),
@@ -10,6 +10,8 @@ function AdminLayout() {
   const path = useRouterState({ select: (s) => s.location.pathname });
   const tabs = [
     { to: "/admin", label: "Appointments", icon: Calendar, exact: true },
+    { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+    { to: "/admin/conversations", label: "AI Conversations", icon: MessageSquare },
     { to: "/admin/doctors", label: "Doctors", icon: Stethoscope },
     { to: "/admin/patients", label: "Patients", icon: Users },
   ];
@@ -21,7 +23,7 @@ function AdminLayout() {
           <p className="text-sm text-muted-foreground">Hospital operations overview</p>
         </div>
       </div>
-      <div className="flex gap-1 mb-6 border-b">
+      <div className="flex gap-1 mb-6 border-b overflow-x-auto">
         {tabs.map((t) => {
           const active = t.exact ? path === t.to : path.startsWith(t.to);
           return (
