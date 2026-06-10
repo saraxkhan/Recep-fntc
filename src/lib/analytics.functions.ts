@@ -1,8 +1,11 @@
 // Admin server functions for AI conversation inspection + analytics.
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { requireAdmin } from "./admin-auth";
 
-export const listCallLogs = createServerFn({ method: "GET" }).handler(async () => {
+export const listCallLogs = createServerFn({ method: "GET" })
+  .middleware([requireAdmin])
+  .handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data, error } = await (supabaseAdmin as any)
     .from("call_logs")
@@ -14,6 +17,7 @@ export const listCallLogs = createServerFn({ method: "GET" }).handler(async () =
 });
 
 export const getCallTranscript = createServerFn({ method: "GET" })
+  .middleware([requireAdmin])
   .inputValidator((d) => z.object({ session_id: z.string().min(1).max(200) }).parse(d))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -32,7 +36,9 @@ export const getCallTranscript = createServerFn({ method: "GET" })
     return { session, messages: messages ?? [] };
   });
 
-export const getAnalytics = createServerFn({ method: "GET" }).handler(async () => {
+export const getAnalytics = createServerFn({ method: "GET" })
+  .middleware([requireAdmin])
+  .handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const [{ data: appts }, { data: calls }] = await Promise.all([
     supabaseAdmin

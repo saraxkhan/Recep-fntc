@@ -3,6 +3,7 @@
 // directly (RLS denies it).
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { requireAdmin, writeAuditLog } from "./admin-auth";
 
 export const createPatient = createServerFn({ method: "POST" })
   .inputValidator((d) =>
@@ -22,7 +23,9 @@ export const createPatient = createServerFn({ method: "POST" })
     return { patient: created, existed: false };
   });
 
-export const listAppointments = createServerFn({ method: "GET" }).handler(async () => {
+export const listAppointments = createServerFn({ method: "GET" })
+  .middleware([requireAdmin])
+  .handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data, error } = await supabaseAdmin
     .from("appointments")
@@ -34,23 +37,34 @@ export const listAppointments = createServerFn({ method: "GET" }).handler(async 
 });
 
 export const updateAppointmentStatus = createServerFn({ method: "POST" })
+  .middleware([requireAdmin])
   .inputValidator((d) =>
     z.object({
       id: z.string().uuid(),
       status: z.enum(["cancelled", "completed", "scheduled"]),
     }).parse(d),
   )
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin
       .from("appointments")
       .update({ status: data.status })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
+    await writeAuditLog({
+      actorId: context.adminId,
+      actorEmail: context.adminEmail,
+      action: "appointment.update_status",
+      resourceType: "appointment",
+      resourceId: data.id,
+      details: { status: data.status },
+    });
     return { ok: true };
   });
 
-export const listPatients = createServerFn({ method: "GET" }).handler(async () => {
+export const listPatients = createServerFn({ method: "GET" })
+  .middleware([requireAdmin])
+  .handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data, error } = await supabaseAdmin
     .from("patients")
@@ -61,6 +75,7 @@ export const listPatients = createServerFn({ method: "GET" }).handler(async () =
 });
 
 export const listDoctors = createServerFn({ method: "GET" }).handler(async () => {
+  // Public read: doctor directory is shown to patients booking online.
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data, error } = await supabaseAdmin
     .from("doctors")
@@ -71,18 +86,28 @@ export const listDoctors = createServerFn({ method: "GET" }).handler(async () =>
 });
 
 export const toggleDoctorActive = createServerFn({ method: "POST" })
+  .middleware([requireAdmin])
   .inputValidator((d) => z.object({ id: z.string().uuid(), active: z.boolean() }).parse(d))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin
       .from("doctors")
       .update({ active: data.active })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
+    await writeAuditLog({
+      actorId: context.adminId,
+      actorEmail: context.adminEmail,
+      action: "doctor.toggle_active",
+      resourceType: "doctor",
+      resourceId: data.id,
+      details: { active: data.active },
+    });
     return { ok: true };
   });
 
 export const updateDoctorSchedule = createServerFn({ method: "POST" })
+  .middleware([requireAdmin])
   .inputValidator((d) =>
     z.object({
       id: z.string().uuid(),
@@ -91,7 +116,7 @@ export const updateDoctorSchedule = createServerFn({ method: "POST" })
       end_time: z.string().regex(/^\d{2}:\d{2}$/),
     }).parse(d),
   )
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin
       .from("doctors")
@@ -102,6 +127,14 @@ export const updateDoctorSchedule = createServerFn({ method: "POST" })
       })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
+    await writeAuditLog({
+      actorId: context.adminId,
+      actorEmail: context.adminEmail,
+      action: "doctor.update_schedule",
+      resourceType: "doctor",
+      resourceId: data.id,
+      details: { working_days: data.working_days, start_time: data.start_time, end_time: data.end_time },
+    });
     return { ok: true };
   });
 
