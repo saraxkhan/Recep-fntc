@@ -1,6 +1,5 @@
 // Server-only helpers: admin gate + audit logging.
 import { createMiddleware, createServerFn } from "@tanstack/react-start";
-import { getRequest } from "@tanstack/react-start/server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export const requireAdmin = createMiddleware({ type: "function" })
@@ -17,37 +16,6 @@ export const requireAdmin = createMiddleware({ type: "function" })
       (context.claims as any)?.email ?? (context.claims as any)?.user_metadata?.email ?? null;
     return next({ context: { adminId: context.userId, adminEmail: email } });
   });
-
-export async function writeAuditLog(params: {
-  actorId: string;
-  actorEmail: string | null;
-  action: string;
-  resourceType?: string;
-  resourceId?: string | null;
-  details?: Record<string, unknown>;
-}) {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  let ip: string | null = null;
-  let ua: string | null = null;
-  try {
-    const req = getRequest();
-    ip =
-      req?.headers.get("cf-connecting-ip") ??
-      req?.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-      null;
-    ua = req?.headers.get("user-agent") ?? null;
-  } catch {}
-  await (supabaseAdmin as any).from("admin_audit_logs").insert({
-    actor_id: params.actorId,
-    actor_email: params.actorEmail,
-    action: params.action,
-    resource_type: params.resourceType ?? null,
-    resource_id: params.resourceId ?? null,
-    details: params.details ?? {},
-    ip_address: ip,
-    user_agent: ua,
-  });
-}
 
 export const checkIsAdmin = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
