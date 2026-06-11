@@ -3,7 +3,7 @@
 // directly (RLS denies it).
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { requireAdmin } from "./admin-auth";
+import { requireAdmin, writeAuditLog } from "./admin-auth";
 
 export const createPatient = createServerFn({ method: "POST" })
   .inputValidator((d) =>
@@ -51,7 +51,6 @@ export const updateAppointmentStatus = createServerFn({ method: "POST" })
       .update({ status: data.status })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
-    const { writeAuditLog } = await import("./admin-audit.server");
     await writeAuditLog({
       actorId: context.adminId,
       actorEmail: context.adminEmail,
@@ -96,7 +95,6 @@ export const toggleDoctorActive = createServerFn({ method: "POST" })
       .update({ active: data.active })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
-    const { writeAuditLog } = await import("./admin-audit.server");
     await writeAuditLog({
       actorId: context.adminId,
       actorEmail: context.adminEmail,
@@ -129,7 +127,6 @@ export const updateDoctorSchedule = createServerFn({ method: "POST" })
       })
       .eq("id", data.id);
     if (error) throw new Error(error.message);
-    const { writeAuditLog } = await import("./admin-audit.server");
     await writeAuditLog({
       actorId: context.adminId,
       actorEmail: context.adminEmail,
