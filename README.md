@@ -279,22 +279,6 @@ All tool calls and responses are persisted to `ai_conversation_logs` so admins c
 
 ---
 
-## Screenshots
-
-> _Add screenshots to a `/screenshots` folder and update the paths below._
-
-| | |
-|---|---|
-| ![Home](screenshots/home.png) | **Landing page** — entry point to chat, self-book, or admin. |
-| ![Chat](screenshots/receptionist.png) | **Maya chat** — streaming AI chat with visible tool-call cards. |
-| ![Book](screenshots/book.png) | **Self-service booking** — specialty → doctor → date → slot → confirm. |
-| ![Admin](screenshots/admin-dashboard.png) | **Admin dashboard** — appointments list with status controls. |
-| ![Analytics](screenshots/analytics.png) | **Analytics** — daily trend, specialty breakdown, top doctors. |
-| ![Conversations](screenshots/conversations.png) | **AI conversations** — session list with full transcript viewer. |
-| ![Audit](screenshots/audit.png) | **Audit log** — timestamped admin actions with IP and details. |
-
----
-
 ## Future Improvements
 
 - **Vapi voice integration** — Wire the `/api/public/ai/*` endpoints to a live Vapi voice assistant for phone-based bookings (the endpoints are already built for this).
